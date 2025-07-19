@@ -4,10 +4,14 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const WorkOrderCard = ({ workOrder, onPress, onStatusPress }) => {
   return (
-    <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.9}>
-      {/* En-tête : Numéro de WO et badge de statut */}
+    <TouchableOpacity
+      style={[styles.card, { borderLeftColor: getStatusColor(workOrder.status) }]}
+      onPress={onPress}
+      activeOpacity={0.95}
+    >
+      {/* En-tête */}
       <View style={styles.header}>
-        <Text style={styles.wonum}>wonum: {workOrder.wonum}</Text>
+        <Text style={styles.wonum}>WO: {workOrder.wonum}</Text>
         <TouchableOpacity
           onPress={(e) => {
             e.stopPropagation();
@@ -18,83 +22,100 @@ const WorkOrderCard = ({ workOrder, onPress, onStatusPress }) => {
           <Text style={styles.statusText}>{workOrder.status}</Text>
         </TouchableOpacity>
       </View>
+
       {/* Description */}
-      <Text style={styles.description}>{workOrder.description}</Text>
-      {/* Section des détails en deux colonnes */}
+      <Text style={styles.description}>
+        {workOrder.description || 'Pas de description'}
+      </Text>
+
+      {/* Ligne de séparation */}
+      <View style={styles.separator} />
+
+      {/* Détails */}
       <View style={styles.detailsContainer}>
-        <View style={styles.detailItem}>
-          <Ionicons name="location-outline" size={16} color="#888" />
-          <Text style={styles.detailText}>{workOrder.location || 'N/A'}</Text>
-        </View>
-        <View style={styles.detailItem}>
-          <Ionicons name="pricetag-outline" size={16} color="#888" />
-          <Text style={styles.detailText}>{workOrder.assetnum || 'N/A'}</Text>
-        </View>
-        <View style={styles.detailItem}>
-          <Ionicons name="business-outline" size={16} color="#888" />
-          <Text style={styles.detailText}>{workOrder.siteid || 'N/A'}</Text>
-        </View>
-        <View style={styles.detailItem}>
-          <Ionicons name="alert-circle-outline" size={16} color="#888" />
-          <Text style={styles.detailText}>Priority: {workOrder.calcpriority || 'N/A'}</Text>
-        </View>
+        <Detail icon="location-outline" label="Emplacement" value={workOrder.location} />
+        <Detail icon="pricetag-outline" label="Asset" value={workOrder.assetnum} />
+        <Detail icon="business-outline" label="Site" value={workOrder.siteid} />
+        <Detail icon="alert-circle-outline" label="Priorité" value={workOrder.calcpriority} />
       </View>
     </TouchableOpacity>
   );
 };
 
+const Detail = ({ icon, label, value }) => (
+  <View style={styles.detailItem}>
+    <Ionicons name={icon} size={18} color="#444" />
+    <View style={{ marginLeft: 8 }}>
+      <Text style={styles.detailLabel}>{label}</Text>
+      <Text style={styles.detailValue}>{value || 'N/A'}</Text>
+    </View>
+  </View>
+);
+
 const getStatusColor = (status) => {
   switch (status) {
-    case 'WAPPR': return '#FFB300';
-    case 'APPR': return '#43A047';
-    case 'WSCH': return '#1E88E5';
-    case 'WMATL': return '#9C27B0';
-    case 'WPCOND': return '#FB8C00';
-    case 'INPRG': return '#00ACC1';
-    case 'COMP': return '#00897B';
-    case 'CLOSED': return '#607D8B';
-    case 'CAN': return '#E53935';
-    default: return '#6c757d';
+    case 'WAPPR': return '#0085FF';   // Orange vif (Présentation)
+    case 'APPR': return '#00B1B1';    // Vert vif (Tableau blanc)
+    case 'WSCH': return '#00B853';    // Bleu vif (Feuille de calcul)
+    case 'WMATL': return '#FF6D00';   // Bleu turquoise (Canva Doc)
+    case 'WPCOND': return '#FF4F5E';  // Rose corail (Réseaux)
+    case 'INPRG': return '#FF2D87';   // Rose fuchsia (Éditeur photo)
+    case 'COMP': return '#D350FF';    // Violet fluo (Vidéos)
+    case 'CLOSE': return '#FF2D87';  // Bleu foncé saturé (Site Web)
+    case 'CAN': return '#38b6ff';     // Rose doux (option intermédiaire)
+    default: return '#FF2D87';        // Gris clair (par défaut neutre)
   }
+  
 };
 
 const styles = StyleSheet.create({
   card: {
     backgroundColor: '#fff',
-    borderRadius: 12,
-    marginHorizontal: 1,
-    marginVertical: 10,
-    padding: 15,
+    borderRadius: 16,
+    marginHorizontal: 10,
+    marginVertical: 8,
+    padding: 16,
+    borderLeftWidth: 5, // Bande à gauche
     shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowRadius: 6,
-    elevation: 3,
+    elevation: 4,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 12,
   },
   wonum: {
-    fontSize: 18, // Taille réduite par rapport à la version précédente
-    fontWeight: '600',
-    color: '#333',
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#222',
   },
   statusBadge: {
     paddingHorizontal: 12,
-    paddingVertical: 5,
+    paddingVertical: 6,
     borderRadius: 20,
+    minWidth: 70,                      // ✅ largeur minimale du badge
+    justifyContent: 'center',         // ✅ centrer verticalement
+    alignItems: 'center',             // ✅ centrer horizontalement
   },
+  
   statusText: {
     color: '#fff',
     fontWeight: '600',
+    fontSize: 13,
   },
   description: {
-    fontSize: 16,
+    fontSize: 15,
     color: '#555',
-    marginBottom: 15,
-    lineHeight: 22,
+    marginTop: 10,
+    marginBottom: 12,
+    lineHeight: 20,
+  },
+  separator: {
+    height: 1,
+    backgroundColor: '#eee',
+    marginBottom: 10,
   },
   detailsContainer: {
     flexDirection: 'row',
@@ -104,13 +125,17 @@ const styles = StyleSheet.create({
   detailItem: {
     width: '48%',
     flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
+    alignItems: 'flex-start',
+    marginBottom: 12,
   },
-  detailText: {
+  detailLabel: {
+    fontSize: 12,
+    color: '#777',
+  },
+  detailValue: {
     fontSize: 14,
-    color: '#444',
-    marginLeft: 8,
+    color: '#222',
+    fontWeight: '500',
   },
 });
 

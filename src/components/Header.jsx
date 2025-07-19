@@ -1,13 +1,16 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const Header = ({ title, navigation, rightComponent, onPressRight }) => {
+const Header = ({ title, navigation, onPressLeft }) => {
   return (
     <View style={styles.header}>
-      {/* 🔙 Bouton Retour si possible */}
-      {navigation?.canGoBack() ? (
-        <TouchableOpacity style={styles.sideButton} onPress={() => navigation.goBack()}>
+      {/* 🔙 Bouton gauche personnalisé ou retour par défaut */}
+      {navigation?.canGoBack() || onPressLeft ? (
+        <TouchableOpacity
+          style={styles.sideButton}
+          onPress={onPressLeft || (() => navigation.goBack())}
+        >
           <Ionicons name="arrow-back" size={28} color="#000" />
         </TouchableOpacity>
       ) : (
@@ -17,14 +20,14 @@ const Header = ({ title, navigation, rightComponent, onPressRight }) => {
       {/* 🏷️ Titre de l'écran */}
       <Text style={styles.headerTitle}>{title}</Text>
 
-      {/* 💡 Composant droit (icône IA) ou placeholder */}
-      {rightComponent ? (
-        <TouchableOpacity style={styles.sideButton} onPress={onPressRight}>
-          {rightComponent}
-        </TouchableOpacity>
-      ) : (
-        <View style={styles.sidePlaceholder} />
-      )}
+      {/* 📷 Image logo à droite */}
+      <View style={styles.logoContainer}>
+        <Image
+          source={require('../constants/logoAssistQ.jpg')}
+          style={styles.logo}
+          resizeMode="contain"
+        />
+      </View>
     </View>
   );
 };
@@ -36,14 +39,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: '#FFF',
     paddingVertical: 10,
-    paddingHorizontal: 2,
+    paddingHorizontal: 10,
   },
   sideButton: {
     width: 40,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   sidePlaceholder: {
     width: 40,
+    height: 40,
   },
   headerTitle: {
     fontSize: 20,
@@ -51,6 +56,16 @@ const styles = StyleSheet.create({
     color: '#000',
     textAlign: 'center',
     flex: 1,
+  },
+  logoContainer: {
+    width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  logo: {
+    width: 65, height: 65, borderRadius: 15 
+
   },
 });
 

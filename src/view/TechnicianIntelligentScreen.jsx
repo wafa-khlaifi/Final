@@ -2,25 +2,40 @@ import React from 'react';
 import {
   SafeAreaView,
   ScrollView,
-  View,
-  Text,
   TouchableOpacity,
-  StyleSheet
+  Text,
+  StyleSheet,
+  View
 } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
 import Header from '../components/Header';
 
 export default function TechnicianIntelligentScreen({ navigation, route }) {
-  // Récupère le workorderid passé depuis l'écran précédent
-  const { workorderid } = route.params || {};
+  const { workorder } = route.params || {};
+
+  const workorderData = {
+    wo_description: workorder?.description,
+    assetnum: workorder?.assetnum,
+    location: workorder?.location,
+    failurecode: workorder?.failurecode || "",
+    worktype: workorder?.worktype,
+    workorderid: workorder?.workorderid,
+  };
 
   const features = [
-    { key: 'correctiveActions',   label: 'Corrective Actions',         icon: 'build',            screen: 'CorrectiveActionsScreen' },
-    { key: 'spareParts',          label: 'Spare Parts',                icon: 'inventory',        screen: 'SparePartsScreen' },
-    { key: 'technicalChatbot',    label: 'Technical Chatbot',          icon: 'chat',             screen: 'TechnicalChatbotScreen' },
-    { key: 'visualDetection',     label: 'Visual Detection',           icon: 'camera-alt',       screen: 'VisualDetectionScreen' },
-    { key: 'equipmentScan',       label: 'Equipment Identification',   icon: 'qr-code-scanner',  screen: 'EquipmentScanScreen' },
-    { key: 'translation',         label: 'Translation',                icon: 'translate',        screen: 'TranslationScreen' },
+    {
+      key: 'AI Asset Diagnosis',
+      label: 'AI Asset Diagnosis',
+      icon: 'build',
+      screen: 'CorrectiveActionsScreen',
+    },
+    {
+      key: 'askGPT',
+      label: 'Ask GPT',
+      icon: 'smart-toy',
+      screen: 'AskGPTScreen',
+    },
   ];
 
   const renderFeatureCard = (item) => (
@@ -28,10 +43,12 @@ export default function TechnicianIntelligentScreen({ navigation, route }) {
       key={item.key}
       style={styles.card}
       onPress={() =>
-        navigation.navigate(item.screen, { workorderid })
+        navigation.navigate(item.screen, {
+          ...workorderData,
+        })
       }
     >
-      <MaterialIcons name={item.icon} size={32} color="#007BFF" />
+      <MaterialIcons name={item.icon} size={40} color="#007BFF" />
       <Text style={styles.cardText}>{item.label}</Text>
     </TouchableOpacity>
   );
@@ -40,7 +57,13 @@ export default function TechnicianIntelligentScreen({ navigation, route }) {
     <SafeAreaView style={styles.container}>
       <Header title="Technical Assistant" navigation={navigation} />
 
-      <ScrollView contentContainerStyle={styles.grid}>
+      <View style={styles.introContainer}>
+        <Text style={styles.introText}>
+          Explore AI tools to assist with your maintenance task.
+        </Text>
+      </View>
+
+      <ScrollView contentContainerStyle={styles.list}>
         {features.map(renderFeatureCard)}
       </ScrollView>
     </SafeAreaView>
@@ -50,31 +73,47 @@ export default function TechnicianIntelligentScreen({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#F0F4F8',
   },
-  grid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    padding: 16,
+  introContainer: {
+    paddingHorizontal: 20,
+    paddingTop: 12,
+  },
+  introText: {
+    fontSize: 15,
+    color: '#555',
+    textAlign: 'center',
+    fontStyle: 'italic',
+    marginBottom: 8,
+  },
+  list: {
+    paddingHorizontal: 20,
+    paddingTop: 10,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    gap: 16,
   },
   card: {
-    width: '48%',
+    width: '100%',
     backgroundColor: '#fff',
-    borderRadius: 12,
-    paddingVertical: 24,
-    marginBottom: 16,
+    borderRadius: 16,
+    paddingVertical: 30,
     alignItems: 'center',
+    justifyContent: 'center',
     shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 3,
+    shadowOpacity: 0.08,
+    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 4,
+    borderWidth: 2,
+    borderColor: '#007BFF', // 🔵 Couleur de bordure
   },
   cardText: {
-    marginTop: 8,
-    fontSize: 14,
-    textAlign: 'center',
+    marginTop: 12,
+    fontSize: 16,
+    fontWeight: '500',
     color: '#333',
+    textAlign: 'center',
   },
 });

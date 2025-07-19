@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Alert,Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Alert,Image, ScrollView } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import * as Animatable from 'react-native-animatable';
 
 import Header from '../components/Header';
 import WorkOrderCard from '../components/WorkOrderCard';
@@ -72,26 +73,30 @@ const WorkorderSubScreen = ({ navigation, route }) => {
     }
   };
 
-  return (
+  return (<ScrollView>
     <View style={styles.container}>
-      <Header
-  title="Work Order Details"
-  navigation={navigation}
-  rightComponent={
-    <Image
-      source={require('../constants/ai-assistant.png')}
-      style={{ width: 28, height: 28 }}
-      resizeMode="contain"
-    />
-    }
-       onPressRight={() => navigation.navigate('TechnicianIntelligentScreen',{
-              workorderid: currentWorkOrder.workorderid})}
-/>
+    <Header title="Work Order Details" navigation={navigation} />
+
       <WorkOrderCard
         workOrder={currentWorkOrder}
         onPress={() => console.log('Card pressed')}
         onStatusPress={handleStatusPress}
       />
+      <Animatable.View
+  animation="fadeInUp"
+  duration={700}
+  style={styles.aiCardContainer}
+>
+  <TouchableOpacity
+    style={styles.aiCard}
+    onPress={() => navigation.navigate('TechnicianIntelligentScreen', { workorder: currentWorkOrder })}
+  >
+    <Ionicons name="chatbubbles-outline" size={28} color="#007BFF" style={{ marginBottom: 8 }} />
+    <Text style={styles.aiCardTitle}>Ask AI</Text>
+    <Text style={styles.aiCardSubtitle}>Get intelligent suggestions for this work order</Text>
+  </TouchableOpacity>
+</Animatable.View>
+
 
       {/* 
         4 lignes manuelles :
@@ -127,7 +132,7 @@ const WorkorderSubScreen = ({ navigation, route }) => {
         onClose={() => setStatusPickerVisible(false)}
         onSelect={handleStatusSelect}
       />
-    </View>
+    </View></ScrollView>
   );
 };
 
@@ -168,6 +173,34 @@ const styles = StyleSheet.create({
     color: '#333',
     textAlign: 'center',  // ✅ Ajout pour centrer le texte sur plusieurs lignes
   },
+  aiCardContainer: {
+    alignItems: 'center',
+    marginVertical: 12,
+  },
+  aiCard: {
+    backgroundColor: '#ffffff',
+    borderRadius: 14,
+    padding: 20,
+    width: '95%',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 6,
+  },
+  aiCardTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#007BFF',
+    marginBottom: 4,
+  },
+  aiCardSubtitle: {
+    fontSize: 14,
+    color: '#555',
+    textAlign: 'center',
+  },
+  
 });
 
 // ✅ Pour le bouton unique (Ligne 4 - Material Transaction)

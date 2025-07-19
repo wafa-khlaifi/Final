@@ -22,7 +22,7 @@ const LoginScreen = ({ navigation }) => {
     const checkStoredCredentials = async () => {
       const storedData = await AsyncStorage.getItem('userData');
       if (storedData) {
-        navigation.replace('WorkOrders');
+        navigation.replace('Home');
       }
     };
     checkStoredCredentials();
@@ -44,7 +44,7 @@ const LoginScreen = ({ navigation }) => {
 
     if (response.success) {
       console.log("✅ Redirection vers WorkOrders");
-      navigation.replace('WorkOrders');
+      navigation.replace('Home');
     } else {
       if (isFocused) {
         Alert.alert("Erreur de connexion", response.error);

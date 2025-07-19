@@ -1,14 +1,15 @@
 import React, { useState, useCallback } from 'react';
-import { 
-  View, 
-  Text, 
-  FlatList, 
-  ActivityIndicator, 
-  StyleSheet, 
-  TouchableOpacity 
+import {
+  View,
+  Text,
+  FlatList,
+  ActivityIndicator,
+  StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
 import { Card } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { fetchWorkLogsByWorkOrderId } from '../services/WorkLog';
 import Header from '../components/Header';
@@ -24,10 +25,7 @@ const WorkLogDetailsScreen = ({ route, navigation }) => {
       const userDataString = await AsyncStorage.getItem('userData');
       const userData = userDataString ? JSON.parse(userDataString) : {};
       const sessionCookie = userData.sessionCookie;
-      if (!sessionCookie) {
-        throw new Error("Missing session cookie");
-      }
-      console.log("Transmitted workorderid:", workorderid);
+      if (!sessionCookie) throw new Error("Missing session cookie");
 
       const response = await fetchWorkLogsByWorkOrderId(workorderid, sessionCookie);
       if (response.success) {
@@ -42,7 +40,6 @@ const WorkLogDetailsScreen = ({ route, navigation }) => {
     }
   };
 
-  // Rafraîchir la liste des worklogs à chaque retour sur l'écran
   useFocusEffect(
     useCallback(() => {
       if (workorderid) {
@@ -82,23 +79,25 @@ const WorkLogDetailsScreen = ({ route, navigation }) => {
       <FlatList
         data={workLogs}
         keyExtractor={(item) => item.worklogid.toString()}
+        contentContainerStyle={styles.list}
         renderItem={({ item }) => (
           <Card style={styles.card}>
-            <Card.Title
-              title={`Work Log ID: ${item.worklogid}`}
-             
-            />
-            <Card.Content>
+            <View style={styles.cardHeader}>
+              <Ionicons name="chatbubble-ellipses-outline" size={20} color="#007BFF" />
+              <Text style={styles.worklogId}>ID: {item.worklogid}</Text>
+            </View>
+            <View style={styles.cardContent}>
               <Text style={styles.description}>
-                Description:{item.description || "No description"}
+                <Ionicons name="document-text-outline" size={16} color="#555" /> {item.description || "No description"}
               </Text>
-              <Text style={styles.info}>Created by: {item.createby}</Text>
-            </Card.Content>
+              <Text style={styles.createdBy}>
+                <Ionicons name="person-outline" size={14} color="#777" /> Created by: {item.createby}
+              </Text>
+            </View>
           </Card>
         )}
-        contentContainerStyle={styles.list}
       />
-      
+
       <TouchableOpacity style={styles.fab} onPress={handleAddWorkLog}>
         <MaterialCommunityIcons name="plus" size={28} color="white" />
       </TouchableOpacity>
@@ -107,32 +106,53 @@ const WorkLogDetailsScreen = ({ route, navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { 
-    flex: 1, 
-    backgroundColor: '#F0F2F5'
+  container: {
+    flex: 1,
+    backgroundColor: '#F0F2F5',
   },
   indicator: {
     marginTop: 20,
   },
   noDataText: {
-    fontSize: 18,
+    fontSize: 16,
     color: '#333',
     textAlign: 'center',
     marginTop: 20,
   },
-  list: { 
-    padding: 16
+  list: {
+    padding: 16,
   },
-  card: { 
-    marginBottom: 16 
+  card: {
+    borderLeftWidth: 4,
+    borderLeftColor: '#007BFF',
+    borderRadius: 10,
+    marginBottom: 16,
+    backgroundColor: '#fff',
+    padding: 14,
+    elevation: 2,
   },
-  description: { 
-    fontSize: 16, 
-    marginBottom: 8 
+  cardHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 6,
   },
-  info: { 
-    fontSize: 14, 
-    color: '#555' 
+  worklogId: {
+    marginLeft: 8,
+    fontWeight: 'bold',
+    color: '#007BFF',
+    fontSize: 16,
+  },
+  cardContent: {
+    marginLeft: 2,
+  },
+  description: {
+    fontSize: 14,
+    color: '#444',
+    marginBottom: 6,
+  },
+  createdBy: {
+    fontSize: 12,
+    color: '#666',
   },
   fab: {
     position: 'absolute',
@@ -146,10 +166,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 5,
-  }
+  },
 });
 
 export default WorkLogDetailsScreen;

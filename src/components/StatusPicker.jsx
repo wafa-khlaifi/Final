@@ -8,18 +8,18 @@ import {
   ActivityIndicator 
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
 const statuses = [
-  { label: "Pending Approval", value: "WAPPR", color: "#FFB300" },
-  { label: "Approved", value: "APPR", color: "#43A047" },
-  { label: "Pending Scheduling", value: "WSCH", color: "#1E88E5" },
-  { label: "Waiting for Materials", value: "WMATL", color: "#9C27B0" },
-  { label: "Waiting Plant Condition", value: "WPCOND", color: "#FB8C00" },
-  { label: "In Progress", value: "INPRG", color: "#00ACC1" },
-  { label: "Completed", value: "COMP", color: "#00897B" },
-  { label: "Closed", value: "CLOSE", color: "#607D8B" },
-  { label: "Canceled", value: "CAN", color: "#E53935" }
+  { label: "Pending Approval", value: "WAPPR", color: "#0085FF" },   // Bleu vif
+  { label: "Approved", value: "APPR", color: "#00B1B1" },            // Bleu turquoise
+  { label: "Pending Scheduling", value: "WSCH", color: "#00B853" },  // Vert vif
+  { label: "Waiting for Materials", value: "WMATL", color: "#FF6D00" }, // Orange vif
+  { label: "Waiting Plant Condition", value: "WPCOND", color: "#FF4F5E" }, // Rose corail
+  { label: "In Progress", value: "INPRG", color: "#FF2D87" },        // Rose fuchsia
+  { label: "Completed", value: "COMP", color: "#D350FF" },           // Violet fluo
+  { label: "Closed", value: "CLOSE", color: "#3B48F3" },             // Bleu foncé saturé
+  { label: "Canceled", value: "CAN", color: "#38B6FF" }              // Bleu clair doux
 ];
+
 
 const StatusPicker = ({ visible, onClose, onSelect, currentStatus }) => {
   const [selected, setSelected] = useState(currentStatus);

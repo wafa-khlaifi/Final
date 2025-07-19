@@ -20,7 +20,7 @@ import { getApiBase } from './apiConfig';
         const apiBase = await getApiBase();
 
         // 🔹 Construire l'URL de l'API avec `workorderid` au lieu de `id`
-        const url = `${apiBase}?oslc.where=woclass="WORKORDER"&oslc.select=workorderid,wonum,description,status,status_description,location,siteid,calcpriority,worktype,failurecode,problemcode,reportedby,assetnum,workorderid&oslc.pageSize=20&pageno=${pageNumber}&lean=1`;
+        const url = `${apiBase}?oslc.where=woclass="WORKORDER"%20and%20status!="CLOSE"%20and%20status!="CAN"&oslc.select=workorderid,wonum,description,status,status_description,location,siteid,calcpriority,worktype,failurecode,problemcode,reportedby,assetnum,workorderid&oslc.pageSize=20&pageno=${pageNumber}&lean=1`;
 
         console.log("📡 Envoi de la requête GET vers :", url);
 
@@ -79,16 +79,20 @@ export const fetchWorkOrderByWonum = async (wonum) => {
         throw new Error(getErrorMessage("auth", "missing_credentials"));
       }
   
-      // 🔹 Construire le filtre OSLC
-      const filter = `woclass="WORKORDER" and wonum="${wonum}"`;
-      console.log("🔍 Filtre OSLC non encodé:", filter);
-      const encodedFilter = encodeURIComponent(filter);
-      console.log("🔍 Filtre OSLC encodé:", encodedFilter);
-      const apiBase = await getApiBase();
+// 🔹 Construire le filtre OSLC
+const filter = `oslc.where=status!="CLOSE"`;
+console.log("🔍 Filtre OSLC non encodé:", filter);
 
-      // 🔹 Construire l'URL de l'API
-      const url = `${apiBase}?oslc.where=${encodedFilter}&oslc.select=workorderid,wonum,description,status,status_description,location,siteid,schedstart,schedfinish,calpriority,failurecode, problemcode,worktype,reportedby,owner,actstart,actfinish,estdur,actlabhrs,actlabcost,plustmptype,assetnum,glaccount,woclass,wogroup,supervisor,workorderid&lean=1`;
-      console.log("📡 URL de la requête:", url);
+const encodedFilter = encodeURIComponent(filter);
+console.log("🔍 Filtre OSLC encodé:", encodedFilter);
+
+const apiBase = await getApiBase();
+
+// 🔹 Construire l'URL de l'API
+const url = `${apiBase}?oslc.where=${encodedFilter}&oslc.select=workorderid,wonum,description,status,status_description,location,siteid,schedstart,schedfinish,calpriority,failurecode,problemcode,worktype,reportedby,owner,actstart,actfinish,estdur,actlabhrs,actlabcost,plustmptype,assetnum,glaccount,woclass,wogroup,supervisor,workorderid&lean=1`;
+
+console.log("📡 URL de la requête:", url);
+
   
       const response = await fetch(url, {
         method: 'GET',
