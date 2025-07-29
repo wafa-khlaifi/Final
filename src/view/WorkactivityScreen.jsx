@@ -46,14 +46,7 @@ const WorkactivityScreen = ({ route, navigation }) => {
     return unsubscribe;
   }, [navigation]);
 
-  if (loading) {
-    return (
-      <View style={styles.container}>
-        <Header title="Work Activities" navigation={navigation} />
-        <ActivityIndicator size="large" color="#007BFF" style={styles.indicator} />
-      </View>
-    );
-  }
+  
   return (
     <View style={styles.container}>
       <Header title="Tasks" navigation={navigation} />
@@ -121,4 +114,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default WorkactivityScreen;
+export default WorkactivityScreen; 

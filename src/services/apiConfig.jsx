@@ -18,7 +18,7 @@ export const getLoginUrl = async () => {
 export const getApiBase = async () => {
   const baseUrl = await getBaseUrl();
   // Ici, vous pouvez définir l'endpoint selon votre logique. Par exemple :
-  return `${baseUrl}/os/mxwo`;
+  return `${baseUrl}/os/aqwo`;
 };
 
 // Construit l'URL pour un workorder spécifique

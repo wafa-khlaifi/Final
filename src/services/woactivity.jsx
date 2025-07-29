@@ -48,7 +48,7 @@ export const fetchWoactivityByWorkOrderId = async (workorderid, sessionCookie) =
     // Pour chaque localref, récupération des détails du WOActivity
     const woactivities = await Promise.all(
       localRefs.map(async (refObj, index) => {
-        let detailUrl = adjustLocalRef(refObj.href);
+        let detailUrl = adjustLocalRef(refObj.localref);
         console.log(`fetchWoactivityByWorkOrderId: Traitement du WOActivity ${index + 1} avec detailUrl =`, detailUrl);
         const detailResponse = await fetch(detailUrl, {
           method: 'GET',

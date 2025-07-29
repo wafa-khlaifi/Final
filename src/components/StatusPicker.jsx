@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 const statuses = [
-  { label: "Pending Approval", value: "WAPPR", color: "#0085FF" },   // Bleu vif
+ // { label: "Pending Approval", value: "WAPPR", color: "#0085FF" },   // Bleu vif
   { label: "Approved", value: "APPR", color: "#00B1B1" },            // Bleu turquoise
   { label: "Pending Scheduling", value: "WSCH", color: "#00B853" },  // Vert vif
   { label: "Waiting for Materials", value: "WMATL", color: "#FF6D00" }, // Orange vif
@@ -17,7 +17,7 @@ const statuses = [
   { label: "In Progress", value: "INPRG", color: "#FF2D87" },        // Rose fuchsia
   { label: "Completed", value: "COMP", color: "#D350FF" },           // Violet fluo
   { label: "Closed", value: "CLOSE", color: "#3B48F3" },             // Bleu foncé saturé
-  { label: "Canceled", value: "CAN", color: "#38B6FF" }              // Bleu clair doux
+ // { label: "Canceled", value: "CAN", color: "#38B6FF" }              // Bleu clair doux
 ];
 
 

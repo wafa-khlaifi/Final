@@ -15,7 +15,7 @@ import { getApiBase } from './apiConfig';
 
         const { username, password, sessionCookie } = JSON.parse(storedData);
         if (!username || !password) {
-            throw new Error(getErrorMessage("auth", "missing_credentials"));
+            throw new Error(getErrorMessage("auth", "Pentials"));
         }
         const apiBase = await getApiBase();
 
@@ -80,7 +80,7 @@ export const fetchWorkOrderByWonum = async (wonum) => {
       }
   
 // 🔹 Construire le filtre OSLC
-const filter = `oslc.where=status!="CLOSE"`;
+const filter = `woclass="WORKORDER" and wonum="${wonum}"`;
 console.log("🔍 Filtre OSLC non encodé:", filter);
 
 const encodedFilter = encodeURIComponent(filter);

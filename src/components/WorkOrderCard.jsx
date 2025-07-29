@@ -33,10 +33,12 @@ const WorkOrderCard = ({ workOrder, onPress, onStatusPress }) => {
 
       {/* Détails */}
       <View style={styles.detailsContainer}>
+      <Detail icon="person-outline" label="Reported By" value={workOrder.reportedby} />
+
         <Detail icon="location-outline" label="Emplacement" value={workOrder.location} />
         <Detail icon="pricetag-outline" label="Asset" value={workOrder.assetnum} />
-        <Detail icon="business-outline" label="Site" value={workOrder.siteid} />
         <Detail icon="alert-circle-outline" label="Priorité" value={workOrder.calcpriority} />
+
       </View>
     </TouchableOpacity>
   );
@@ -74,7 +76,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     marginHorizontal: 10,
     marginVertical: 8,
-    padding: 16,
+    padding: 10,
     borderLeftWidth: 5, // Bande à gauche
     shadowColor: '#000',
     shadowOpacity: 0.1,
@@ -87,8 +89,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   wonum: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 16,
+    //fontWeight: 'bold',
     color: '#222',
   },
   statusBadge: {
@@ -111,6 +113,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 12,
     lineHeight: 20,
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#222',
   },
   separator: {
     height: 1,
